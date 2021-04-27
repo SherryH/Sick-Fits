@@ -29,7 +29,7 @@ const Form = styled.form`
   select {
     width: 100%;
     padding: 0.5rem;
-    font-size: 1rem;
+    font-size: 2rem;
     border: 1px solid black;
     &:focus {
       outline: 0;
