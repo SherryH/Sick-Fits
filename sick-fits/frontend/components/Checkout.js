@@ -86,11 +86,10 @@ const CheckoutForm = () => {
     // 3.1 Handle any errors from Stripe (invalid card, card expired etc)
     // 4. Pass the cart order and token to BE to process order (custom mutation!)
     const order = await checkout({ variables: { token: paymentMethod.id } });
-    console.log('data', data);
     // 4.1 Change the page to view order
     router.push({
-      pathname: '/order[id]',
-      query: { id: order.data.id },
+      pathname: '/order/[id]',
+      query: { id: order.data.checkout.id },
     });
     // 4.2 Close the cart
     closeCart();
