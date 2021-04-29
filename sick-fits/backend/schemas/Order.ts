@@ -6,10 +6,7 @@ export const Order = list({
   fields: {
     label: virtual({
       graphQLReturnType: 'String',
-      resolver: (item, args, context, info) => {
-        console.log({ item, args, context, info });
-        return `${formatMoney(item.total)}`;
-      },
+      resolver: (item, args, context, info) => `${formatMoney(item.total)}`,
     }),
     charge: text(),
     user: relationship({ ref: 'User.orders' }),

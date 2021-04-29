@@ -11,6 +11,8 @@ import { ProductImage } from './schemas/ProductImage';
 import { CartItem } from './schemas/CartItem';
 import { OrderItem } from './schemas/OrderItem';
 import { Order } from './schemas/Order';
+import { Role } from './schemas/Role';
+import { permissionsList } from './schemas/fields';
 import { insertSeedData } from './seed-data';
 import { sendPasswordResetToken } from './mail';
 import { extendGraphqlSchema } from './mutations/extendGraphqlSchema';
@@ -75,6 +77,7 @@ export default withAuth(
       CartItem,
       OrderItem,
       Order,
+      Role,
     }),
     extendGraphqlSchema,
     ui: {
@@ -88,7 +91,7 @@ export default withAuth(
     // User: 'id email', => session.data.email is also returned
     session: withItemData(statelessSessions(sessionConfig), {
       // graphQL query
-      User: 'id email',
+      User: `id name email role { ${permissionsList.join(' ')} }`,
     }),
   })
 );
