@@ -22,6 +22,7 @@ export const permissions = {
 // or a filter which limits what the user can CRUD. filter is an object, like the `where` in graphQL
 export const rules = {
   canManageProducts: ({ session }: ListAccessArgs) => {
+    if (!isSignedIn) return false;
     // 1. if user has the role which has the canManageProducts permission
     // enable access
     if (permissions.canManageProducts({ session })) {
@@ -29,6 +30,27 @@ export const rules = {
     }
     // 2. if user creates his own product, enable access
     return { user: { id: session.itemId } };
+  },
+  canOrder: ({ session }: ListAccessArgs) => {
+    if (!isSignedIn) return false;
+    // 1. if user has the role which has the canManageProducts permission
+    // enable access
+    if (permissions.canManageCart({ session })) {
+      return true;
+    }
+    // 2. if user creates his own order, enable access
+    return { user: { id: session.itemId } };
+  },
+  canManageOrderItems: ({ session }: ListAccessArgs) => {
+    if (!isSignedIn) return false;
+    // 1. if user has the role which has the canManageProducts permission
+    // enable access
+    if (permissions.canManageCart({ session })) {
+      return true;
+    }
+    // 2. if user creates his own order, enable access
+    // OrderItem links to Order first, Order then links to User
+    return { order: { user: { id: session.itemId } } };
   },
   canReadProducts: ({ session }: ListAccessArgs) => {
     // user with canManageProducts permission can view all products
@@ -43,5 +65,15 @@ export const rules = {
     return {
       OR: [{ user: { id: session.itemId } }, { status: 'AVAILABLE' }],
     };
+  },
+  canManageUsers: ({ session }: ListAccessArgs) => {
+    if (!isSignedIn) return false;
+    // 1. if user has the role which has the canManageProducts permission
+    // enable access
+    if (permissions.canManageUsers({ session })) {
+      return true;
+    }
+    // 2. the user can manage his own access
+    return { id: session.itemId };
   },
 };
