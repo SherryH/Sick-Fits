@@ -13,6 +13,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { useCart } from '../hooks/useCart';
 import SickButton from './styles/SickButton';
+import { CURRENT_USER_QUERY } from './User';
 
 const StyledCheckoutForm = styled.form`
   padding: 2rem;
@@ -48,7 +49,10 @@ const CheckoutForm = () => {
   const { closeCart } = useCart();
 
   const [checkout, { data, error: graphQLError }] = useMutation(
-    CREATE_ORDER_MUTATION
+    CREATE_ORDER_MUTATION,
+    {
+      refetchQueries: [{ query: CURRENT_USER_QUERY }],
+    }
   );
 
   async function handleCheckout(e) {

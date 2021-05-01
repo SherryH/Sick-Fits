@@ -45,7 +45,7 @@ export default function OrdersPage() {
   const { data, error, loading } = useQuery(ORDERS_QUERY);
   console.log({ data });
   if (loading) return <p>loading....</p>;
-  if (error) return <DisplayError error={error.message} />;
+  if (error) return <DisplayError error={error} />;
   const { allOrders } = data;
   return (
     <div>
